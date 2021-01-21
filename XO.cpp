@@ -2,55 +2,275 @@
 #include <cstdlib>
 
 #define BOARDSIZE 9
-#define COLS 3
 
 using namespace std;
 
-void printStartingGameBoard();
-void printGameBoard();
-void printBoards();
-void whoIsWinner(char winner);
-bool isFieldEmpty(char gameBoard[], int move);
 int humanMakesMove();
 int computerMakesMove();
+
 void makingMove(int move, int turn);
-char hasWon();
+bool isFieldEmpty(char gameBoard[], int move);
+bool hasWon(char player);
+void whoIsWinner(char winner);
 
-int possibleMoves[BOARDSIZE] = {4, 3, 5, 7, 1, 0, 6, 8, 2};
+void printBoards();
+void printStartingGameBoard();
+void printGameBoard();
+
 char gameBoard[BOARDSIZE] = {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '};
-
+ 
 int main(){
 	int turn = 1;
-	int humanMove, computerMove;
-	
+  	int humanMove, computerMove;
+  	
 	while(true){
 		humanMove = humanMakesMove();
 		makingMove(humanMove, turn);
 		turn++;
-		
-		if(hasWon() == 'X'){
+			
+		if(hasWon('X')){
 			printBoards();
 			whoIsWinner('X');
-			return 0;
-		}
-		
-		computerMove = computerMakesMove();
-		makingMove(computerMove, turn);
-		turn++;
-		
-		if(hasWon() == 'O'){
-			printBoards();
-			whoIsWinner('O');
+			
 			return 0;
 		}
 		
 		if(turn == 10){
 			printBoards();
 			whoIsWinner('D');
+				
+			return 0;
+		}
+			
+		computerMove = computerMakesMove();
+		makingMove(computerMove, turn);
+		turn++;
+			
+		if(hasWon('O')){
+			printBoards();
+			whoIsWinner('O');
 			
 			return 0;
 		}
 	}
+}
+             
+int humanMakesMove(){
+	printBoards();
+	
+	while(true){
+		int move;
+		
+		cout << "Your move: ";  
+		cin >> move;
+	
+		if((move > 0 || move < 8) && gameBoard[move] == ' '){
+			return move;
+		}else{
+			cout << "You inputed wrong position!" << endl << endl;
+		}
+	}
+}
+ 
+void makingMove(int move, int turn){
+	if(turn % 2 == 1){
+		gameBoard[move] = 'X';
+	}else{
+		gameBoard[move] = 'O';
+	}
+}
+ 
+int computerMakesMove(){
+	
+	//012
+	if(gameBoard[0] == 'O' && gameBoard[1] == 'O' && gameBoard[2] == ' '){
+		return 2;
+	}else if(gameBoard[0] == 'O' && gameBoard[2] == 'O' && gameBoard[1] == ' '){
+        return 1;
+	}else if(gameBoard[1] == 'O' && gameBoard[2] == 'O' && gameBoard[0] == ' '){
+        return 0;
+		                       
+	//345	   
+	}else if(gameBoard[3] == 'O' && gameBoard[4] == 'O' && gameBoard[5] == ' '){
+		return 5; 				   
+	}else if(gameBoard[3] == 'O' && gameBoard[5] == 'O' && gameBoard[4] == ' '){
+        return 4; 				   
+	}else if(gameBoard[5] == 'O' && gameBoard[4] == 'O' && gameBoard[3] == ' '){
+        return 3;
+	
+	//678 			   
+	}else if(gameBoard[6] == 'O' && gameBoard[7] == 'O' && gameBoard[8] == ' '){
+        return 8;				   
+	}else if(gameBoard[6] == 'O' && gameBoard[8] == 'O' && gameBoard[7] == ' '){
+        return 7;				                
+	}else if(gameBoard[8] == 'O' && gameBoard[7] == 'O' && gameBoard[6] == ' '){
+    	return 6;
+		
+	//036   
+	}else if(gameBoard[0] == 'O' && gameBoard[3] == 'O' && gameBoard[6] == ' '){
+        return 6;	                                                   
+	}else if(gameBoard[0] == 'O' && gameBoard[6] == 'O' && gameBoard[3] == ' '){
+        return 3;
+	}else if(gameBoard[3] == 'O' && gameBoard[6] == 'O' && gameBoard[0] == ' '){
+        return 0;
+        
+    //147
+	}else if(gameBoard[1] == 'O' && gameBoard[4] == 'O' && gameBoard[7] == ' '){
+        return 7;	                                                    
+    }else if(gameBoard[1] == 'O' && gameBoard[7] == 'O' && gameBoard[4] == ' '){
+        return 4;
+	}else if(gameBoard[7] == 'O' && gameBoard[4] == 'O' && gameBoard[1] == ' '){
+        return 1;
+		
+	//258	                                          
+    }else if(gameBoard[2] == 'O' && gameBoard[5] == 'O' && gameBoard[8] == ' '){
+        return 8; 
+	}else if(gameBoard[2] == 'O' && gameBoard[8] == 'O' && gameBoard[5] == ' '){
+        return 5;
+	}else if(gameBoard[8] == 'O' && gameBoard[5] == 'O' && gameBoard[2] == ' '){
+        return 2;
+		
+		
+	//048	
+	}else if(gameBoard[0] == 'O' && gameBoard[4] == 'O' && gameBoard[8] == ' '){
+        return 8;
+	}else if(gameBoard[0] == 'O' && gameBoard[8] == 'O' && gameBoard[4] == ' '){
+        return 4;			                                                    
+    }else if(gameBoard[4] == 'O' && gameBoard[8] == 'O' && gameBoard[0] == ' '){
+        return 0; 
+		                                                    
+    //246
+	}else if(gameBoard[2] == 'O' && gameBoard[4] == 'O' && gameBoard[6] == ' '){
+        return 6;	                                                    
+    }else if(gameBoard[2] == 'O' && gameBoard[6] == 'O' && gameBoard[4] == ' '){
+        return 4; 
+	}else if(gameBoard[6] == 'O' && gameBoard[4] == 'O' && gameBoard[2] == ' '){
+        return 2;
+       
+	   
+	//012 X   
+	}else if(gameBoard[0] == 'X' && gameBoard[1] == 'X' && gameBoard[2] == ' '){
+        return 2;
+    }else if(gameBoard[0] == 'X' && gameBoard[2] == 'X' && gameBoard[1] == ' '){
+        return 1;
+    }else if(gameBoard[1] == 'X' && gameBoard[2] == 'X' && gameBoard[0] == ' '){
+        return 0;
+		
+		    
+    //345 X  
+    }else if(gameBoard[3] == 'X' && gameBoard[4] == 'X' && gameBoard[5] == ' '){
+        return 5;
+    }else if(gameBoard[3] == 'X' && gameBoard[5] == 'X' && gameBoard[4] == ' '){
+        return 4;    
+    }else if(gameBoard[5] == 'X' && gameBoard[4] == 'X' && gameBoard[3] == ' '){
+        return 3;
+		
+	//678 X	   
+    }else if(gameBoard[6] == 'X' && gameBoard[7] == 'X' && gameBoard[8] == ' '){
+        return 8;    
+    }else if(gameBoard[6] == 'X' && gameBoard[8] == 'X' && gameBoard[7] == ' '){
+        return 7;    
+    }else if(gameBoard[8] == 'X' && gameBoard[7] == 'X' && gameBoard[6] == ' '){
+        return 6;
+        
+    //036 X
+    }else if(gameBoard[0] == 'X' && gameBoard[3] == 'X' && gameBoard[6] == ' '){
+        return 6;
+    }else if(gameBoard[0] == 'X' && gameBoard[6] == 'X' && gameBoard[3] == ' '){
+        return 3;
+    }else if(gameBoard[3] == 'X' && gameBoard[6] == 'X' && gameBoard[0] == ' '){
+        return 0;
+    
+    //147 X
+    }else if(gameBoard[1] == 'X' && gameBoard[4] == 'X' && gameBoard[7] == ' '){
+        return 7;
+    }else if(gameBoard[1] == 'X' && gameBoard[7] == 'X' && gameBoard[4] == ' '){
+        return 4;
+    }else if(gameBoard[7] == 'X' && gameBoard[4] == 'X' && gameBoard[1] == ' '){
+        return 1;    
+    
+    //258 X  
+    }else if(gameBoard[2] == 'X' && gameBoard[5] == 'X' && gameBoard[8] == ' '){
+        return 8;
+    }else if(gameBoard[2] == 'X' && gameBoard[8] == 'X' && gameBoard[5] == ' '){
+        return 5;
+    }else if(gameBoard[8] == 'X' && gameBoard[5] == 'X' && gameBoard[2] == ' '){
+        return 2;   
+        
+    //048 X
+    }else if(gameBoard[0] == 'X' && gameBoard[4] == 'X' && gameBoard[8] == ' '){
+        return 8;
+    }else if(gameBoard[0] == 'X' && gameBoard[8] == 'X' && gameBoard[4] == ' '){
+        return 4;   
+    }else if(gameBoard[4] == 'X' && gameBoard[8] == 'X' && gameBoard[0] == ' '){
+        return 0;
+		
+	//246 X 
+	}else if(gameBoard[2] == 'X' && gameBoard[4] == 'X' && gameBoard[6] == ' '){
+        return 6; 
+    }else if(gameBoard[2] == 'X' && gameBoard[6] == 'X' && gameBoard[4] == ' '){
+        return 4;
+	}else if(gameBoard[4] == 'X' && gameBoard[6] == 'X' && gameBoard[2] == ' '){
+        return 2;
+    }else{
+    	return 0;
+    }	
+}
+
+bool hasWon(char player){
+	
+	//012
+	if(gameBoard[0] == 'X' && gameBoard[1] == 'X' && gameBoard[2] == 'X'){
+        return true;
+    }else if(gameBoard[0] == 'O' && gameBoard[1] == 'O' && gameBoard[2] == 'O'){
+        return true;
+        
+    //345
+    }else if(gameBoard[3] == 'X' && gameBoard[4] == 'X' && gameBoard[5] == 'X'){
+        return true;
+    }else if(gameBoard[3] == 'O' && gameBoard[4] == 'O' && gameBoard[5] == 'O'){
+        return true;
+        
+    //678
+    }else if(gameBoard[6] == 'X' && gameBoard[7] == 'X' && gameBoard[8] == 'X'){
+        return true;
+    }else if(gameBoard[6] == 'O' && gameBoard[7] == 'O' && gameBoard[8] == 'O'){
+        return true;
+        
+    //036
+    }else if(gameBoard[0] == 'X' && gameBoard[3] == 'X' && gameBoard[6] == 'X'){
+        return true;
+    }else if(gameBoard[0] == 'O' && gameBoard[3] == 'O' && gameBoard[6] == 'O'){
+        return true;
+        
+    //147
+    }else if(gameBoard[1] == 'X' && gameBoard[4] == 'X' && gameBoard[7] == 'X'){
+        return true;
+    }else if(gameBoard[1] == 'O' && gameBoard[4] == 'O' && gameBoard[7] == 'O'){
+        return true;
+        
+    //258
+    }else if(gameBoard[2] == 'X' && gameBoard[5] == 'X' && gameBoard[8] == 'X'){
+        return true;
+    }else if(gameBoard[2] == 'O' && gameBoard[5] == 'O' && gameBoard[8] == 'O'){
+        return true;
+        
+    //048
+    }else if(gameBoard[0] == 'X' && gameBoard[4] == 'X' && gameBoard[8] == 'X'){
+        return true;
+    }else if(gameBoard[0] == 'O' && gameBoard[4] == 'O' && gameBoard[8] == 'O'){
+        return true;
+        
+    //246
+    }else if(gameBoard[2] == 'X' && gameBoard[4] == 'X' && gameBoard[6] == 'X'){
+        return true;
+    }else if(gameBoard[2] == 'O' && gameBoard[4] == 'O' && gameBoard[6] == 'O'){
+        return true;
+        
+        
+    }else{
+        return false;
+    }
 }
 
 void printBoards(){
@@ -62,79 +282,15 @@ void printBoards(){
 
 void printStartingGameBoard(){
 	cout << "Start Board: " << endl;
-	cout << "[7][8][9]" << endl;
-	cout << "[4][5][6]" << endl;
-	cout << "[1][2][3]" << endl << endl;
+	cout << "[0][1][2]" << endl;
+	cout << "[3][4][5]" << endl;
+	cout << "[6][7][8]" << endl << endl;
 }
 
 void printGameBoard(){
-	cout << "[" << gameBoard[6] << "][" << gameBoard[7] << "][" << gameBoard[8] << "]" << endl;
-	cout << "[" << gameBoard[3] << "][" << gameBoard[4] << "][" << gameBoard[5] << "]" << endl;
 	cout << "[" << gameBoard[0] << "][" << gameBoard[1] << "][" << gameBoard[2] << "]" << endl;
-}
-
-char hasWon(){
-	int winConditions[][COLS] = {{0, 1, 2}, {3, 4, 5}, {6, 7, 8}, {0, 3, 6}, {1, 4, 7}, {2, 5, 8}, {0, 4, 8}, {2, 4, 6}};
-	
-	for (int i = 0; i < 8; i++){
-        if((gameBoard[winConditions[i][0]] == 'X' or gameBoard[winConditions[i][0]] == 'O') and
-            gameBoard[winConditions[i][0]] == gameBoard[winConditions[i][1]] and
-            gameBoard[winConditions[i][0]] == gameBoard[winConditions[i][2]])
-            {
-                return gameBoard[winConditions[i][0]];
-            }
-    }
-    
-    return 0;
-}
-
-int humanMakesMove(){
-	printBoards();
-	
-	while(true){
-		int move;
-		
-		cout << "Your move: ";  
-		cin >> move;
-	
-		if(isFieldEmpty(gameBoard, move)){
-			return move;
-		}else{
-			cout << "You inputed wrong position!" << endl << endl;
-		}
-	}
-}
-
-int computerMakesMove(){
-	printBoards();
-	
-	int movesCounter = 0, move;
-	
-	while (movesCounter < BOARDSIZE){
-        move = possibleMoves[movesCounter];
-        
-        if(isFieldEmpty(gameBoard, move + 1)){
-            return move;
-        }
-        
-		movesCounter++;
-    }
-}
-		
-void makingMove(int move, int turn){
-	if(turn % 2 != 0){
-		gameBoard[move - 1] = 'X';
-	}else{
-		gameBoard[move] = 'O';
-	}
-}
-
-bool isFieldEmpty(char gameBoard[], int move){
-    if (gameBoard[move - 1] == ' '){
-        return true;
-    }
-
-    return false;
+	cout << "[" << gameBoard[3] << "][" << gameBoard[4] << "][" << gameBoard[5] << "]" << endl;
+	cout << "[" << gameBoard[6] << "][" << gameBoard[7] << "][" << gameBoard[8] << "]" << endl;
 }
 
 void whoIsWinner(char winner){
