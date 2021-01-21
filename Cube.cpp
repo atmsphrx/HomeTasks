@@ -10,6 +10,8 @@ void printCube(int array[CUBESIZE][CUBESIZE][CUBESIZE]);
 void isRayThrough(int array[CUBESIZE][CUBESIZE][CUBESIZE], char side);
 void printGraph();
 
+bool isRay = false;
+
 int main(){
 	int cube[CUBESIZE][CUBESIZE][CUBESIZE];
 
@@ -20,6 +22,10 @@ int main(){
 	isRayThrough(cube, 'X');
 	isRayThrough(cube, 'Y');
 	isRayThrough(cube, 'Z');
+	
+	if(isRay == false){
+		cout << "There is no ray going through cube!" << endl;
+	}
 	
 	return 0;
 }
@@ -38,6 +44,7 @@ void isRayThrough(int array[CUBESIZE][CUBESIZE][CUBESIZE], char side){
 						
 						if(counterForZeroes == CUBESIZE){
 							cout << "Sideview X. The ray go through cube: " << j + 1 << " row and " << k + 1  << " column." << endl ;
+							isRay = true;
 						}
 					}
 				}
@@ -55,6 +62,7 @@ void isRayThrough(int array[CUBESIZE][CUBESIZE][CUBESIZE], char side){
 						
 						if(counterForZeroes == CUBESIZE){
 							cout << "Sideview Y. The ray go through cube: " << i + 1 << " dimension and " << j + 1 << " row." << endl;
+							isRay = true;
 						}
 					}
 				}
@@ -72,6 +80,7 @@ void isRayThrough(int array[CUBESIZE][CUBESIZE][CUBESIZE], char side){
 						
 						if(counterForZeroes == CUBESIZE){
 							cout << "Sideview Z. The ray go through cube: " << i + 1 << " dimension and " << k + 1 << " column." << endl;
+							isRay = true;
 						}
 					}
 				}
