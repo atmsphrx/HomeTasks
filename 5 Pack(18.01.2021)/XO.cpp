@@ -94,6 +94,7 @@ int computerMakesMove(){
 		while(true){
 			if(gameBoard[move] != ' '){
 				move = rand() % 9;
+				
 				continue;
 			}
 			break;
