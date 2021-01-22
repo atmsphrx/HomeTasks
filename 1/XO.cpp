@@ -1,5 +1,6 @@
 #include <iostream>
 #include <cstdlib>
+#include <ctime>
 
 #define BOARDSIZE 9
 
@@ -18,7 +19,9 @@ void printStartingGameBoard();
 void printGameBoard();
 
 char gameBoard[BOARDSIZE] = {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '};
- 
+
+int turn1counter = 0;
+
 int main(){
 	int turn = 1;
   	int humanMove, computerMove;
@@ -81,7 +84,25 @@ void makingMove(int move, int turn){
 }
  
 int computerMakesMove(){
+	srand(time(0));
 	
+	if(turn1counter == 0){
+		int move = rand() % 9;
+		
+		turn1counter++;
+		
+		while(true){
+			if(gameBoard[move] != ' '){
+				move = rand() % 9;
+				continue;
+			}
+			break;
+		}
+		
+		
+		return move;
+	}
+		
 	//012
 	if(gameBoard[0] == 'O' && gameBoard[1] == 'O' && gameBoard[2] == ' '){
 		return 2;
